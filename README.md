@@ -1,7 +1,7 @@
 # Employee_Tracker
   [![License Badge](https://img.shields.io/badge/license-MIT-blue)](https://choosealicense.com/licenses/mit/)
   ## Description
-  describe here <hr>
+  A command line application, built for a small business owner, to manage the business' employee database <hr>
   
   ## Table of Contents
   * [Installation](#installation)
@@ -13,16 +13,16 @@
   
 
   ## Installation
-   <hr>
+   Clone the repository from GitHub. Install required packages by running "npm install".Must have node.js and mysql installed. <hr>
 
   ## Usage
-   <hr>
+   Start mysql using the "mysql -u root -p" command.Create database tables by running "source ./db/schema.sql". Fill tables with base database content by running "source ./db/seeds.sql". Quit mysql and start the application in the root directory using "npm start". [Click here](https://drive.google.com/file/d/1AO78ghAfjqJ8fQyu-eL-FMLzxyXVfLqa/view) for video walk-through.<hr>
 
   ## Contributing
   Contact first with questions about any major changes or contributions. Pull requests are welcome. <hr>
 
   ## Tests
-   <hr>
+   No tests to run. Test contribution encouraged.<hr>
 
   ## Questions
   <strong>Tyler Holton</strong>
