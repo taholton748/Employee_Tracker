@@ -13,10 +13,12 @@
   
 
   ## Installation
-   Clone the repository from GitHub. Install required packages by running "npm install".Must have node.js and mysql installed. <hr>
+   Clone the repository from GitHub. Install required packages by running ` npm install `. Must have node.js and mysql installed. <hr>
 
   ## Usage
-   Start mysql using the "mysql -u root -p" command.Create database tables by running "source ./db/schema.sql". Fill tables with base database content by running "source ./db/seeds.sql". Quit mysql and start the application in the root directory using "npm start". [Click here](https://drive.google.com/file/d/1AO78ghAfjqJ8fQyu-eL-FMLzxyXVfLqa/view) for video walk-through.<hr>
+   Start mysql using the "mysql -u root -p" command. Create database tables by running ` source ./db/schema.sql `. Fill tables with base database content by running ` source ./db/seeds.sql `. Quit mysql and start the application in the root directory using ` npm start `. 
+
+   [Click here](https://drive.google.com/file/d/1AO78ghAfjqJ8fQyu-eL-FMLzxyXVfLqa/view) for video walk-through.<hr>
 
   ## Contributing
   Contact first with questions about any major changes or contributions. Pull requests are welcome. <hr>
