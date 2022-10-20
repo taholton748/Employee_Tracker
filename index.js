@@ -53,7 +53,7 @@ const mainMenu = async () => {
         },
         {
           name: "Update Employee Role",
-          value: "UPDATE_ROLE",
+          value: "UPDATE_EMPLOYEE",
         },
       ],
     },
@@ -94,11 +94,11 @@ const mainMenu = async () => {
 const viewDepartments = async () => {
   try {
     const [departmentData] = await db.query("SELECT * FROM department");
-  console.table(departmentData);
-  mainMenu();
+    console.table(departmentData);
+    mainMenu();
   } catch (error) {
     res.status(400).json({ error: err.message });
-      return;
+    return;
   }
 };
 
@@ -106,11 +106,11 @@ const viewDepartments = async () => {
 const viewRoles = async () => {
   try {
     const [roleData] = await db.query("SELECT * FROM role");
-  console.table(roleData);
-  mainMenu();
+    console.table(roleData);
+    mainMenu();
   } catch (error) {
     res.status(400).json({ error: err.message });
-      return;
+    return;
   }
 };
 
@@ -122,7 +122,7 @@ const viewEmployees = async () => {
     mainMenu();
   } catch (error) {
     res.status(400).json({ error: err.message });
-      return;
+    return;
   }
 };
 
@@ -136,18 +136,18 @@ const addDepartment = async () => {
         message: "Enter new department name: ",
       },
     ])
-    .then(answer => {
-        const newDept = `INSERT INTO department (name)
+    .then((answer) => {
+      const newDept = `INSERT INTO department (name)
         VALUES (?)`;
-        db.query(newDept, answer.addDept, (err, result) => {
-            if (err) throw err;
-            console.log('Added ' + answer.addDept + 'to departments!');
-        })
-        viewDepartments();
+      db.query(newDept, answer.addDept, (err, result) => {
+        if (err) throw err;
+        console.log("Added " + answer.addDept + "to departments!");
+      });
+      viewDepartments();
     })
     .catch(() => {
-        res.status(400).json({ error: err.message });
-        return;
+      res.status(400).json({ error: err.message });
+      return;
     });
 };
 
@@ -171,15 +171,18 @@ const addRole = async () => {
         message: "Enter department ID for new role: ",
       },
     ])
-    .then(answer => {
-    try {
-      const newRole = [answer.roleName, answer.salary, answer.departmentId];
-        db.query(`INSERT INTO role (roleName, salary, departmentId)
-        VALUES (?, ?, ?)`, [newRole],)
-      viewRoles();
-    } catch (error) {
+    .then((answer) => {
+      try {
+        const newRole = [answer.roleName, answer.salary, answer.departmentId];
+        db.query(
+          `INSERT INTO role (title, salary, department_id)
+        VALUES (?)`,
+          [newRole]
+        );
+        viewRoles();
+      } catch (error) {
         res.status(400).json({ error: err.message });
-          return;
+        return;
       }
     });
 };
@@ -199,44 +202,63 @@ const addEmployee = async () => {
         message: "Enter employee's last name: ",
       },
       {
-        type: "list",
+        type: "input",
         name: "role",
-        message: "Choose employee role:",
-        choices: [],
+        message: "Enter employee role ID: ",
       },
       {
         type: "input",
         name: "managerName",
-        message: "Enter employee's manager name: ",
+        message: "Enter employee's manager ID: ",
       },
-      // TODO something here
     ])
-    .then(() => {
-      mainMenu();
+    .then((answer) => {
+      try {
+        const newEmployee = [
+          answer.firstName,
+          answer.lastName,
+          answer.role,
+          answer.managerName,
+        ];
+        db.query(
+          `INSERT INTO employee (first_name, last_name, role_id, manager_id)
+          VALUES (?)`,
+          [newEmployee]
+        );
+        viewEmployees();
+      } catch (error) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
     });
 };
 
 // Update employee role
 const updateEmployee = async () => {
-  inquirer
-    .prompt([
-      {
-        type: "list",
-        name: "employeeToUpdate",
-        message: "Which employee would you like to update? ",
-        choices: [],
-      },
-      {
-        type: "list",
-        name: "newEmployeeRole",
-        message: "What is the employee's new role?",
-        choices: [],
-      },
-      // TODO something here
-    ])
-    .then(() => {
-      mainMenu();
-    });
+  const [employeeData] = await db.query (`SELECT * FROM employee`);
+console.table(employeeData);
+  const employeeId = await inquirer.prompt([
+    {
+      type: "input",
+      name: "employeeToUpdate",
+      message: "Enter employee ID you would like to update: ",
+    },
+  ]);
+  const [roleData] = await db.query (`SELECT * FROM role`);
+console.table(roleData);
+  const roleId = await inquirer.prompt([
+    {
+      type: "input",
+      name: "newEmployeeRole",
+      message: "Enter new role ID: ",
+    },
+  ]);
+
+  const updateEmployee = [roleId.newEmployeeRole, employeeId.employeeToUpdate];
+  const sqlQuery = `UPDATE employee SET role_id = ? WHERE id = ? `;
+
+  db.query(sqlQuery, updateEmployee);
+  viewEmployees();
 };
 
 mainMenu();
